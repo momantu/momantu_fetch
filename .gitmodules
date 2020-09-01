@@ -1,0 +1,15 @@
+[submodule "mobile_manipulator_behaviors"]
+	path = mobile_manipulator_behaviors
+	url = https://github.com/momantu/mobile_manipulator_behaviors.git
+[submodule "generic_flexbe_states"]
+	path = generic_flexbe_states
+	url = https://github.com/momantu/generic_flexbe_states.git
+[submodule "gazebo_apriltag"]
+	path = gazebo_apriltag
+	url = https://github.com/momantu/gazebo_apriltag.git
+[submodule "executive_smach"]
+	path = executive_smach
+	url = https://github.com/ros/executive_smach.git
+[submodule "flexbe_app"]
+	path = flexbe_app
+	url = https://github.com/FlexBE/flexbe_app.git
