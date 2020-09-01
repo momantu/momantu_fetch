@@ -1,0 +1,12 @@
+<launch>
+    <node name="dynamic_reconfigure" pkg="dynamic_reconfigure" type="dynparam"
+          args="set /depth_republish/compressedDepth png_level 1"/>
+    <node pkg="image_transport" type="republish" name="rgb_decompress"
+          args=" compressed in:=/rgb_republish raw out:=/rgb_trans_raw">
+        <param name="compressed/mode" value="color"/>
+    </node>
+    <node pkg="image_transport" type="republish" name="depth_decompress"
+          args=" compressedDepth in:=/depth_republish raw out:=/depth_trans_raw">
+        <param name="compressed/mode" value="depth"/>
+    </node>
+</launch>

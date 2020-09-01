@@ -1,0 +1,31 @@
+<launch>
+    <!-- Load  ExecuteTaskSolutionCapability so we can execute found solutions in simulation -->
+    <param name="move_group/capabilities" value="move_group/ExecuteTaskSolutionCapability"/>
+
+    <!-- By default, we do not start a database (it can be large) -->
+    <arg name="db" default="false"/>
+    <arg name="debug" default="false"/>
+
+    <!-- Load the URDF, SRDF and other .yaml configuration files on the param server -->
+    <include file="$(find fetch_moveit_config)/launch/planning_context.launch">
+        <arg name="load_robot_description" value="false"/>
+    </include>
+
+    <!-- Run the main MoveIt executable without trajectory execution (we do not have controllers configured by default) -->
+    <arg name="pipeline" default="$(optenv PLANNING_PIPELINE ompl)"/>
+    <include file="$(find fetch_moveit_config)/launch/move_group.launch">
+        <arg name="allow_trajectory_execution" value="true"/>
+        <arg name="allow_active_sensing" value="true"/>       <!--  enable octomap -->
+        <arg name="fake_execution" value="false"/>
+        <arg name="pipeline" value="$(arg pipeline)"/>
+        <arg name="info" value="true"/>
+        <arg name="debug" value="$(arg debug)"/>
+    </include>
+    <rosparam param="move_group/trajectory_execution/execution_duration_monitoring">false</rosparam>
+    <rosparam param="move_group/trajectory_execution/allowed_execution_duration_scaling">10</rosparam>
+    <rosparam param="move_group/allowed_execution_duration_scaling">10</rosparam>
+
+    <!-- If database loading was enabled, start mongodb as well -->
+    <include file="$(find fetch_moveit_config)/launch/default_warehouse_db.launch" if="$(arg db)"/>
+
+</launch>

@@ -1,0 +1,31 @@
+<launch>
+  <arg name="move_real_robot"       default="true"/>
+  <arg name="base_frame"            default="/base_link"/>
+  <arg name="eef_frame"             default="/gripper_link"/>
+  <arg name="eef_parent_frame"      default="/wrist_roll_link"/>
+  <arg name="tag_id"                default="/tag_1"/>
+  <arg name="use_torso"             default="true"/>
+  <arg name="rviz"                  default="true"/>
+  <arg name="behavior_name"         default="bring_something_from_a_to_b" />
+  <arg name="run_behavior_directly" default="false"/> <!--Running Behaviors Without Operator -->
+
+  <node name="robot_server" pkg="fetch_common" type="robot_server" output="screen" >
+    <param name="move_real_robot"   type="bool"   value="$(arg move_real_robot)" />
+    <param name="base_frame"        type="string" value="$(arg base_frame)" />
+    <param name="eef_frame"         type="string" value="$(arg eef_frame)" />
+    <param name="eef_parent_frame"  type="string" value="$(arg eef_parent_frame)" />
+    <param name="tag_id"            type="string" value="$(arg tag_id)" />
+    <param name="move_group_name"   type="string" value="arm_with_torso"   if="$(arg use_torso)" />
+    <param name="move_group_name"   type="string" value="arm"              unless="$(arg use_torso)" />
+  </node>
+
+  <include file="$(find flexbe_app)/launch/flexbe_full.launch">
+  </include>
+  <node name="launch_behavior" pkg="flexbe_widget" type="be_launcher" output="screen" args="-b '$(arg behavior_name)'" if="$(arg run_behavior_directly)"/>
+
+  <group if="$(arg rviz)">
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find fetch_common)/rviz/moveit.rviz" >
+    </node>
+  </group>
+
+</launch>

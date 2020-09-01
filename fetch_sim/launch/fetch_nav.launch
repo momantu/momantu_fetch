@@ -1,0 +1,28 @@
+<launch>
+    <arg name="init_x" default="0.0"/>
+    <arg name="init_y" default="0.0"/>
+    <arg name="init_yaw" default="0.0"/>
+
+    <!-- Navigation requires at least one map. -->
+    <arg name="map_file" default="$(find fetch_sim)/maps/big_indoor.yaml"/>
+
+    <!-- Navigation parameter files -->
+    <arg name="move_base_include" default="$(find fetch_sim)/launch/include/move_base.launch.xml"/>
+    <arg name="amcl_include" default="$(find fetch_sim)/launch/include/amcl.launch.xml"/>
+
+    <!-- serve up a map -->
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
+
+    <!-- localize the robot -->
+    <include file="$(arg amcl_include)">
+        <arg name="x" value="$(arg init_x)"/>
+        <arg name="y" value="$(arg init_y)"/>
+        <arg name="yaw" value="$(arg init_yaw)"/>
+    </include>
+
+    <!-- move the robot -->
+    <include file="$(arg move_base_include)">
+        <arg name="name" value="fetch"/>
+    </include>
+
+</launch>

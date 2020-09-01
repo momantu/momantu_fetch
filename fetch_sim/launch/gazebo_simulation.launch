@@ -1,0 +1,30 @@
+<launch>
+
+    <arg name="robot" default="fetch"/>
+    <arg name="debug" default="false"/>
+    <arg name="gui" default="true"/>
+    <arg name="headless" default="false"/>
+    <arg name="x" default="-4.7"/>
+    <arg name="y" default="-3.44"/>
+    <arg name="yaw" default="3.14"/>
+
+    <!-- Start Gazebo with a blank world -->
+    <env name="GAZEBO_MODEL_PATH"
+         value="$(find fetch_gazebo)/models:$(find gazebo_apriltag)/models:$(find fetch_sim)/models:$(optenv GAZEBO_MODEL_PATH)"/>
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="headless" value="$(arg headless)"/>
+        <arg name="world_name" value="$(find fetch_sim)/worlds/four_rooms.world"/>
+    </include>
+
+    <!-- Oh, you wanted a robot? -->
+    <include file="$(find fetch_sim)/launch/include/$(arg robot).launch.xml">
+        <arg name="x" value="$(arg x)"/>
+        <arg name="y" value="$(arg y)"/>
+        <arg name="yaw" value="$(arg yaw)"/>
+    </include>
+
+</launch>

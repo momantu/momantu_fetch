@@ -1,0 +1,38 @@
+<launch>
+    <arg name="robot" default="fetch"/>
+    <arg name="debug" default="false"/>
+    <arg name="gui" default="true"/>
+    <arg name="headless" default="false"/>
+    <arg name="rviz" default="true"/>
+    <arg name="x" default="-4.7"/>
+    <arg name="y" default="-3.44"/>
+    <arg name="yaw" default="3.14"/>
+
+    <!-- launch gazebo simulation -->
+    <include file="$(find fetch_sim)/launch/gazebo_simulation.launch">
+        <arg name="robot" value="$(arg robot)"/>
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="headless" value="$(arg headless)"/>
+        <arg name="x" value="$(arg x)"/>
+        <arg name="y" value="$(arg y)"/>
+        <arg name="yaw" value="$(arg yaw)"/>
+    </include>
+
+    <!-- launch moveit -->
+    <include file="$(find fetch_common)/launch/moveit.launch">
+        <arg name="db" value="false"/>
+        <arg name="debug" value="false"/>
+    </include>
+
+    <!-- launch navigation -->
+    <include file="$(find fetch_sim)/launch/fetch_nav.launch">
+        <arg name="map_file" value="$(find fetch_sim)/maps/big_indoor.yaml"/>
+        <arg name="init_x" value="$(arg x)"/>
+        <arg name="init_y" value="$(arg y)"/>
+        <arg name="init_yaw" value="$(arg yaw)"/>
+    </include>
+
+    <!-- launch apriltag detection -->
+    <include file="$(find apriltag_cfg)/launch/fetch_continuous_detection.launch"/>
+</launch>

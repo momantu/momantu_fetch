@@ -1,0 +1,20 @@
+<launch>
+
+  <arg name="scan_topic"     default="base_scan" />
+  <arg name="map_topic"      default="map" />
+  <arg name="use_map_topic"  default="false" />
+  <arg name="x"              default="0.0" />
+  <arg name="y"              default="0.0" />
+  <arg name="yaw"            default="0.0" />
+
+  <node pkg="amcl" type="amcl" name="amcl">
+    <remap from="scan" to="$(arg scan_topic)" />
+    <remap from="map" to="$(arg map_topic)" />
+    <param name="use_map_topic"  value="$(arg use_map_topic)" />
+    <rosparam file="$(find fetch_sim)/config/amcl.yaml" command="load" />
+    <param name="initial_pose_x" value="$(arg x)" />
+    <param name="initial_pose_y" value="$(arg y)" />
+    <param name="initial_pose_a" value="$(arg yaw)" />
+  </node>
+
+</launch>

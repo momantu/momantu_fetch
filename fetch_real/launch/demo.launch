@@ -1,0 +1,30 @@
+<launch>
+    <arg name="robot" default="fetch"/>
+    <arg name="debug" default="false"/>
+    <arg name="gui" default="true"/>
+    <arg name="headless" default="false"/>
+    <arg name="rviz" default="true"/>
+    <arg name="x" default="1.071"/>
+    <arg name="y" default="2.957"/>
+    <arg name="yaw" default="-2.82"/>
+
+    <!-- launch moveit -->
+    <include file="$(find fetch_common)/launch/moveit.launch">
+        <arg name="db" value="false"/>
+        <arg name="debug" value="false"/>
+    </include>
+
+    <!-- launch navigation -->
+    <include file="$(find fetch_sim)/launch/fetch_nav.launch">
+        <arg name="map_file" value="$(find fetch_real)/maps/sistD2.yaml"/>
+        <arg name="init_x" value="$(arg x)"/>
+        <arg name="init_y" value="$(arg y)"/>
+        <arg name="init_yaw" value="$(arg yaw)"/>
+    </include>
+
+    <!-- launch apriltag detection -->
+    <include file="$(find apriltag_cfg)/launch/fetch_continuous_detection.launch"/>
+
+    <!-- compress image and publish -->
+    <include file="$(find fetch_real)/launch/pub_images.launch"/>
+</launch>

@@ -1,0 +1,10 @@
+<launch>
+
+    <include file="$(find fetch_common)/launch/flexbe_connect.launch">
+        <arg name="tag_id" default="/tag_1"/>
+        <arg name="use_torso" default="true"/>
+        <arg name="behavior_name" default="bring_something_from_a_to_b"/>
+        <arg name="run_behavior_directly" default="false"/>
+    </include>
+
+</launch>

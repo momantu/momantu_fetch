@@ -1,0 +1,6 @@
+<launch>
+    <node pkg="image_transport" type="republish" name="rgb_compress"
+          args="raw in:=/head_camera/rgb/image_rect_color compressed out:=/rgb_republish"/>
+    <node pkg="image_transport" type="republish" name="dep_compress"
+          args="raw in:=/head_camera/depth_registered/image compressedDepth out:=/depth_republish"/>
+</launch>

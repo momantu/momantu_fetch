@@ -1,0 +1,12 @@
+<launch>
+
+  <include file="$(find fetch_common)/launch/flexbe_connect.launch">
+    <arg name="tag_id"                default="/tag_7"/>
+    <arg name="use_torso"             default="false"/>
+    <arg name="behavior_name"         default="fetch_real_208to203" />
+    <arg name="run_behavior_directly" default="true"/>
+  </include>
+
+  <include file="$(find fetch_real)/launch/sub_image.launch" />
+
+</launch>
